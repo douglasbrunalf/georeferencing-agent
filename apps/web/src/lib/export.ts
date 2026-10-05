@@ -9,7 +9,6 @@ const CSV_COLUMNS = [
   'direccion_optimizada',
   'precision_despues',
   'nivel_detalle_despues',
-  'fuente_match',
   'estado',
 ] as const;
 
@@ -27,7 +26,6 @@ function toRow(addr: AddressRecord): Record<(typeof CSV_COLUMNS)[number], unknow
     direccion_optimizada: addr.normalizedText ?? '',
     precision_despues: addr.precisionAfter ?? '',
     nivel_detalle_despues: addr.detailLevelAfter ?? '',
-    fuente_match: addr.hereMatchSource ?? '',
     estado: STATUS_LABELS[addr.status] ?? addr.status,
   };
 }
