@@ -50,7 +50,7 @@ export default function AdminPage() {
               <CardTitle>Nuevo usuario</CardTitle>
             </div>
             <CardDescription>
-              Creá una cuenta para alguien más del equipo. Solo se aceptan correos @cnid.co — le llega una
+              Creá una cuenta para alguien más del equipo. Puede ser de cualquier dominio — le llega una
               contraseña temporal por correo y la cambia por una propia en su primer ingreso.
             </CardDescription>
           </CardHeader>

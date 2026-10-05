@@ -3,7 +3,10 @@ import { AdminCreateUserCommand, UsernameExistsException } from '@aws-sdk/client
 import { cognito, env } from '../lib/aws-clients.js';
 import { requireAuth, requireCnidCoAdmin } from '../lib/auth.js';
 
-const ADMIN_EMAIL_DOMAIN = (process.env.ADMIN_EMAIL_DOMAIN ?? '').toLowerCase();
+// Basic RFC-ish email shape check. The caller is already gated to @cnid.co
+// admins by requireCnidCoAdmin; the account being created may belong to any
+// domain, so we only validate that it's a well-formed email here.
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default async function adminRoutes(app: FastifyInstance) {
   app.addHook('onRequest', requireAuth);
@@ -13,8 +16,8 @@ export default async function adminRoutes(app: FastifyInstance) {
     const body = request.body as { email?: string } | undefined;
     const email = body?.email?.trim().toLowerCase();
 
-    if (!email || !email.endsWith(`@${ADMIN_EMAIL_DOMAIN}`)) {
-      return reply.code(400).send({ error: `El correo debe pertenecer al dominio @${ADMIN_EMAIL_DOMAIN}.` });
+    if (!email || !EMAIL_REGEX.test(email)) {
+      return reply.code(400).send({ error: 'Ingresá un correo válido.' });
     }
 
     try {
